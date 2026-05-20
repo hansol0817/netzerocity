@@ -1,14 +1,33 @@
+/* =========================
+   CARBON COLLAPSE
+========================= */
+
+/* STATE */
+
 let year = 2030;
 let turn = 1;
+let maxTurn = 10;
 
 let carbon = 20;
 let happy = 100;
 let power = 70;
 let money = 700;
 
-let selectedPolicy = null;
+/* 세력 */
 
-/* ELEMENT */
+let eco = 50;
+let corp = 50;
+let citizen = 50;
+
+/* 선택 카드 */
+
+let selectedCard = null;
+
+/* 후폭풍 */
+
+let delayedEffects = [];
+
+/* DOM */
 
 const yearText =
 document.getElementById("yearText");
@@ -34,12 +53,39 @@ document.getElementById("feed");
 const cityImage =
 document.getElementById("cityImage");
 
+const cityState =
+document.getElementById("cityState");
+
+const routeText =
+document.getElementById("routeText");
+
+const ecoBar =
+document.getElementById("ecoBar");
+
+const corpBar =
+document.getElementById("corpBar");
+
+const citizenBar =
+document.getElementById("citizenBar");
+
+const cardsArea =
+document.getElementById("cardsArea");
+
+const selectedCardText =
+document.getElementById("selectedCardText");
+
+const eventBox =
+document.getElementById("eventBox");
+
+const screenEffect =
+document.getElementById("screenEffect");
+
 /* GRAPH */
 
 const chart =
 new Chart(
 
-  document.getElementById("chart"),
+  document.getElementById("mainChart"),
 
   {
 
@@ -75,26 +121,298 @@ new Chart(
 
 );
 
-/* 시민 반응 중앙 팝업 */
+/* 카드 풀 */
 
-function showCitizenPopup(title, text){
+const allCards = [
 
-  const popup =
-  document.getElementById("citizenPopup");
+  {
+
+    id:"solar",
+
+    title:"☀ 태양광 발전",
+
+    desc:"친환경 에너지 투자",
+
+    cost:80,
+
+    effect(){
+
+      carbon -= 15;
+      happy += 10;
+      eco += 10;
+
+      cityImage.className =
+      "greenMode";
+
+      showNews(
+
+        "☀ 친환경 정책 시행",
+
+        "시민들이 깨끗해진 하늘에 환호합니다."
+
+      );
+
+      addFeed(
+        "🌱 시민들이 친환경 정책을 지지합니다."
+      );
+
+      delayedEffects.push({
+
+        turn:2,
+
+        text:"☀ 태양광 발전소 완공",
+
+        effect(){
+
+          power += 20;
+
+        }
+
+      });
+
+    }
+
+  },
+
+  {
+
+    id:"industry",
+
+    title:"🏭 산업단지 확대",
+
+    desc:"경제 성장 중심",
+
+    cost:0,
+
+    effect(){
+
+      money += 150;
+      carbon += 20;
+      happy -= 15;
+
+      corp += 15;
+      eco -= 10;
+
+      cityImage.className =
+      "pollutionMode";
+
+      showNews(
+
+        "🏭 산업 성장",
+
+        "경제는 성장했지만 공기가 나빠졌습니다."
+
+      );
+
+      addFeed(
+        "😷 시민들이 대기오염을 걱정합니다."
+      );
+
+      delayedEffects.push({
+
+        turn:3,
+
+        text:"🌫 미세먼지 폭증",
+
+        effect(){
+
+          happy -= 10;
+          carbon += 10;
+
+        }
+
+      });
+
+    }
+
+  },
+
+  {
+
+    id:"green",
+
+    title:"🌳 도시 녹화",
+
+    desc:"공원 확대 정책",
+
+    cost:50,
+
+    effect(){
+
+      money -= 50;
+      happy += 18;
+      carbon -= 10;
+
+      eco += 8;
+      citizen += 10;
+
+      cityImage.className =
+      "greenMode";
+
+      showNews(
+
+        "🌳 녹색 도시 프로젝트",
+
+        "시민 만족도가 증가했습니다."
+
+      );
+
+      addFeed(
+        "🌳 시민들이 공원 확대를 환영합니다."
+      );
+
+    }
+
+  },
+
+  {
+
+    id:"nuclear",
+
+    title:"⚛ 원자력 확대",
+
+    desc:"안정적 전력 공급",
+
+    cost:100,
+
+    effect(){
+
+      money -= 100;
+      power += 35;
+      carbon -= 8;
+
+      corp += 5;
+      citizen -= 5;
+
+      cityImage.className =
+      "futureMode";
+
+      showNews(
+
+        "⚛ 원자력 시대",
+
+        "전력 공급이 안정화되었습니다."
+
+      );
+
+      addFeed(
+        "⚡ 시민들이 원전 안전성을 우려합니다."
+      );
+
+      if(Math.random() < 0.15){
+
+        carbon += 20;
+        happy -= 25;
+
+        showNews(
+
+          "☢ 원전 사고 발생",
+
+          "도시가 방사능 공포에 빠졌습니다."
+
+        );
+
+      }
+
+    }
+
+  },
+
+  {
+
+    id:"subway",
+
+    title:"🚇 지하철 확장",
+
+    desc:"교통 효율 증가",
+
+    cost:120,
+
+    effect(){
+
+      money -= 120;
+      carbon -= 12;
+      happy += 12;
+
+      eco += 5;
+      citizen += 5;
+
+      showNews(
+
+        "🚇 대중교통 혁신",
+
+        "교통 체증이 감소했습니다."
+
+      );
+
+      addFeed(
+        "🚇 시민들이 이동 편의를 체감합니다."
+      );
+
+    }
+
+  },
+
+  {
+
+    id:"coal",
+
+    title:"🛢 석탄 보조금",
+
+    desc:"빠른 산업 성장",
+
+    cost:0,
+
+    effect(){
+
+      money += 200;
+      carbon += 30;
+      happy -= 20;
+
+      corp += 20;
+      eco -= 20;
+
+      cityImage.className =
+      "pollutionMode";
+
+      showNews(
+
+        "🛢 화석연료 의존 증가",
+
+        "경제는 성장했지만 탄소가 급증합니다."
+
+      );
+
+      addFeed(
+        "🌫 시민들이 건강 악화를 호소합니다."
+      );
+
+    }
+
+  }
+
+];
+
+/* 뉴스 */
+
+function showNews(title, desc){
+
+  const news =
+  document.getElementById("breakingNews");
 
   document.getElementById(
-    "popupTitle"
+    "newsTitle"
   ).innerHTML = title;
 
   document.getElementById(
-    "popupText"
-  ).innerHTML = text;
+    "newsDesc"
+  ).innerHTML = desc;
 
-  popup.style.display = "block";
+  news.style.display = "block";
 
   setTimeout(()=>{
 
-    popup.style.display = "none";
+    news.style.display = "none";
 
   },2500);
 
@@ -117,6 +435,175 @@ function addFeed(text){
 
 }
 
+/* 카드 랜덤 */
+
+function generateCards(){
+
+  cardsArea.innerHTML = "";
+
+  let shuffled =
+  [...allCards]
+  .sort(()=>Math.random()-0.5)
+  .slice(0,3);
+
+  shuffled.forEach(card=>{
+
+    const div =
+    document.createElement("div");
+
+    div.className =
+    "policy-card";
+
+    div.innerHTML = `
+
+      <h3>${card.title}</h3>
+
+      <p>${card.desc}</p>
+
+      <div class="card-info">
+
+        <div>💰 비용 : ${card.cost}억</div>
+
+      </div>
+
+    `;
+
+    div.onclick = ()=>{
+
+      document
+      .querySelectorAll(".policy-card")
+      .forEach(c=>{
+
+        c.classList.remove("selected");
+
+      });
+
+      div.classList.add("selected");
+
+      selectedCard = card;
+
+      selectedCardText.innerHTML =
+      card.title;
+
+    };
+
+    cardsArea.appendChild(div);
+
+  });
+
+}
+
+/* 랜덤 사건 */
+
+function randomEvent(){
+
+  let r =
+  Math.floor(Math.random()*5);
+
+  if(r === 0){
+
+    carbon += 10;
+
+    eventBox.innerHTML =
+    "☀ 폭염으로 전력 사용량 증가";
+
+    showNews(
+
+      "☀ 폭염 발생",
+
+      "냉방 사용량이 폭증했습니다."
+
+    );
+
+  }
+
+  if(r === 1){
+
+    money -= 80;
+
+    eventBox.innerHTML =
+    "⛈ 태풍 피해 발생";
+
+    showNews(
+
+      "⛈ 태풍 상륙",
+
+      "도시 시설이 피해를 입었습니다."
+
+    );
+
+  }
+
+  if(r === 2){
+
+    happy -= 15;
+
+    eventBox.innerHTML =
+    "😡 시민 시위 발생";
+
+    showNews(
+
+      "😡 시민 시위",
+
+      "시민 불만이 폭발했습니다."
+
+    );
+
+  }
+
+  if(r === 3){
+
+    carbon += 15;
+
+    eventBox.innerHTML =
+    "🌫 미세먼지 경보";
+
+  }
+
+  if(r === 4){
+
+    money += 100;
+
+    eventBox.innerHTML =
+    "📈 경제 호황";
+
+  }
+
+}
+
+/* 후폭풍 */
+
+function processDelayed(){
+
+  delayedEffects.forEach(effect=>{
+
+    effect.turn--;
+
+    if(effect.turn <= 0){
+
+      effect.effect();
+
+      addFeed(effect.text);
+
+      showNews(
+
+        "⏳ 장기 영향 발생",
+
+        effect.text
+
+      );
+
+    }
+
+  });
+
+  delayedEffects =
+  delayedEffects.filter(
+    e=>e.turn > 0
+  );
+
+}
+
 /* UPDATE */
 
 function updateUI(){
@@ -133,6 +620,17 @@ function updateUI(){
 
   moneyText.innerHTML = money;
 
+  ecoBar.style.width =
+  eco + "%";
+
+  corpBar.style.width =
+  corp + "%";
+
+  citizenBar.style.width =
+  citizen + "%";
+
+  /* 그래프 */
+
   chart.data.labels.push(year);
 
   chart.data.datasets[0].data.push(carbon);
@@ -141,23 +639,78 @@ function updateUI(){
 
   chart.update();
 
+  /* 상태 */
+
+  if(carbon >= 80){
+
+    cityState.innerHTML =
+    "CLIMATE COLLAPSE";
+
+    cityImage.className =
+    "disasterMode";
+
+    routeText.innerHTML =
+    "🌫 기후 붕괴 도시";
+
+  }
+
+  else if(happy <= 30){
+
+    cityState.innerHTML =
+    "CIVIL UNREST";
+
+    routeText.innerHTML =
+    "😡 시민 불안 도시";
+
+  }
+
+  else if(carbon <= 20){
+
+    cityState.innerHTML =
+    "GREEN CITY";
+
+    routeText.innerHTML =
+    "🌿 친환경 미래도시";
+
+  }
+
+  else if(money >= 1200){
+
+    cityState.innerHTML =
+    "MEGA INDUSTRY";
+
+    routeText.innerHTML =
+    "🏭 산업 초강대국";
+
+  }
+
+  else{
+
+    cityState.innerHTML =
+    "NORMAL";
+
+    routeText.innerHTML =
+    "🏙 균형 발전 도시";
+
+  }
+
 }
 
-/* POLICY */
+/* GAME OVER */
 
-function selectPolicy(policy, element){
-
-  selectedPolicy = policy;
+function endGame(title, desc){
 
   document
-  .querySelectorAll(".policy-card")
-  .forEach(card=>{
+  .getElementById("gameOverScreen")
+  .style.display = "flex";
 
-    card.classList.remove("selected");
+  document
+  .getElementById("gameOverTitle")
+  .innerHTML = title;
 
-  });
-
-  element.classList.add("selected");
+  document
+  .getElementById("gameOverDesc")
+  .innerHTML = desc;
 
 }
 
@@ -165,7 +718,7 @@ function selectPolicy(policy, element){
 
 function nextTurn(){
 
-  if(selectedPolicy == null){
+  if(selectedCard == null){
 
     addFeed(
       "❌ 정책을 선택하세요."
@@ -174,122 +727,121 @@ function nextTurn(){
     return;
   }
 
+  if(money < selectedCard.cost){
+
+    showNews(
+
+      "💸 예산 부족",
+
+      "해당 정책을 실행할 수 없습니다."
+
+    );
+
+    return;
+  }
+
   year++;
   turn++;
 
-  /* 태양광 */
+  selectedCard.effect();
 
-  if(selectedPolicy === "solar"){
+  processDelayed();
 
-    money -= 80;
+  randomEvent();
 
-    carbon -= 15;
+  /* 전력 부족 */
 
-    happy += 10;
+  if(power <= 20){
 
-    cityImage.className =
-    "greenEffect";
-
-    showCitizenPopup(
-
-      "☀ 시민 반응",
-
-      "“하늘이 훨씬 깨끗해졌어요!”<br><br>시민 만족도 증가"
-
-    );
-
-    addFeed(
-      "🌱 시민들이 친환경 정책을 환영합니다."
-    );
-
-  }
-
-  /* 산업단지 */
-
-  if(selectedPolicy === "industry"){
-
-    money += 150;
-
-    carbon += 20;
-
-    happy -= 10;
+    happy -= 20;
 
     cityImage.className =
-    "pollutionEffect";
+    "blackoutMode";
 
-    showCitizenPopup(
+    showNews(
 
-      "🏭 시민 반응",
+      "⚡ 대규모 정전",
 
-      "“돈은 벌리는데 공기가 너무 안 좋아...”"
+      "도시 전체 전력이 부족합니다."
 
-    );
-
-    addFeed(
-      "😷 시민들이 대기오염을 걱정합니다."
-    );
-
-  }
-
-  /* 도시녹화 */
-
-  if(selectedPolicy === "green"){
-
-    money -= 50;
-
-    carbon -= 10;
-
-    happy += 15;
-
-    cityImage.className =
-    "greenEffect";
-
-    showCitizenPopup(
-
-      "🌳 시민 반응",
-
-      "“공원이 많아져서 산책하기 좋아요!”"
-
-    );
-
-    addFeed(
-      "🌳 시민 행복도가 증가했습니다."
-    );
-
-  }
-
-  /* 원자력 */
-
-  if(selectedPolicy === "nuclear"){
-
-    money -= 100;
-
-    power += 30;
-
-    carbon -= 10;
-
-    happy -= 5;
-
-    cityImage.className =
-    "futureEffect";
-
-    showCitizenPopup(
-
-      "⚛ 시민 반응",
-
-      "“전기는 안정적이지만 조금 불안해요...”"
-
-    );
-
-    addFeed(
-      "⚡ 시민들이 원전 안전성을 걱정합니다."
     );
 
   }
 
   updateUI();
 
-  selectedPolicy = null;
+  selectedCard = null;
+
+  selectedCardText.innerHTML =
+  "선택된 정책 없음";
+
+  generateCards();
+
+  /* 엔딩 */
+
+  if(carbon >= 100){
+
+    endGame(
+
+      "🌍 GAME OVER",
+
+      "기후 붕괴로 도시가 파괴되었습니다."
+
+    );
+
+  }
+
+  if(happy <= 0){
+
+    endGame(
+
+      "😡 GAME OVER",
+
+      "시민 혁명이 발생했습니다."
+
+    );
+
+  }
+
+  if(turn > maxTurn){
+
+    if(carbon <= 25){
+
+      endGame(
+
+        "🌿 GREEN ENDING",
+
+        "세계 최고의 친환경 도시가 되었습니다."
+
+      );
+
+    }
+
+    else if(money >= 1200){
+
+      endGame(
+
+        "🏭 INDUSTRY ENDING",
+
+        "초거대 산업 국가로 성장했습니다."
+
+      );
+
+    }
+
+    else{
+
+      endGame(
+
+        "🏙 NORMAL ENDING",
+
+        "평범한 도시로 남았습니다."
+
+      );
+
+    }
+
+  }
 
 }
 
@@ -298,5 +850,9 @@ function nextTurn(){
 document
 .getElementById("confirmButton")
 .onclick = nextTurn;
+
+/* START */
+
+generateCards();
 
 updateUI();
