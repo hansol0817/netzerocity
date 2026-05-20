@@ -110,21 +110,15 @@ body{
   font-size:22px;
 }
 
-#weatherBox{
+/* GRAPH */
 
-  position:absolute;
+.graph-box{
 
-  top:60px;
+  background:#111f33;
 
-  left:20px;
+  padding:15px;
 
-  z-index:10;
-
-  background:rgba(0,0,0,0.5);
-
-  padding:10px 20px;
-
-  border-radius:10px;
+  border-radius:15px;
 }
 
 /* FEED */
@@ -140,17 +134,6 @@ body{
   margin-bottom:10px;
 
   border-left:4px solid #52ff9e;
-}
-
-/* GRAPH */
-
-.graph-box{
-
-  background:#111f33;
-
-  padding:15px;
-
-  border-radius:15px;
 }
 
 /* POLICY */
@@ -244,9 +227,9 @@ body{
   cursor:pointer;
 }
 
-/* BIG EVENT */
+/* 중앙 시민 반응 팝업 */
 
-#bigEvent{
+#citizenPopup{
 
   position:absolute;
 
@@ -256,7 +239,7 @@ body{
 
   transform:translate(-50%,-50%);
 
-  width:700px;
+  width:650px;
 
   background:rgba(0,0,0,0.82);
 
@@ -272,34 +255,33 @@ body{
 
   display:none;
 
-  animation:eventShow 0.5s;
+  animation:popupShow 0.5s;
 }
 
-#bigEvent h1{
+.popup-content h1{
 
   color:#52ff9e;
 
-  font-size:55px;
+  font-size:50px;
 
   margin-bottom:20px;
 }
 
-#bigEvent p{
+.popup-content p{
 
   font-size:28px;
 
   line-height:1.7;
 }
 
-@keyframes eventShow{
+@keyframes popupShow{
 
   from{
 
     opacity:0;
 
     transform:
-    translate(-50%,-40%)
-    scale(0.8);
+    translateY(40px);
 
   }
 
@@ -308,14 +290,13 @@ body{
     opacity:1;
 
     transform:
-    translate(-50%,-50%)
-    scale(1);
+    translateY(0px);
 
   }
 
 }
 
-/* EFFECTS */
+/* 화면 효과 */
 
 .greenEffect{
 
@@ -328,9 +309,9 @@ body{
 .pollutionEffect{
 
   filter:
-  sepia(0.4)
+  sepia(0.5)
   brightness(0.7)
-  saturate(1.4);
+  saturate(1.5);
 }
 
 .futureEffect{
