@@ -77,51 +77,60 @@ document.getElementById("selectedCardText");
 const eventBox =
 document.getElementById("eventBox");
 
-const screenEffect =
-document.getElementById("screenEffect");
+/* =========================
+   안전한 그래프 생성
+========================= */
 
-/* GRAPH */
+const chartCanvas =
+document.getElementById("mainChart");
 
-const chart =
-new Chart(
+let chart = null;
 
-  document.getElementById("mainChart"),
+if(chartCanvas){
 
-  {
+  chart = new Chart(
 
-    type:"line",
+    chartCanvas,
 
-    data:{
+    {
 
-      labels:["2030"],
+      type:"line",
 
-      datasets:[
+      data:{
 
-        {
+        labels:["2030"],
 
-          label:"탄소",
+        datasets:[
 
-          data:[carbon]
+          {
 
-        },
+            label:"탄소",
 
-        {
+            data:[carbon]
 
-          label:"행복",
+          },
 
-          data:[happy]
+          {
 
-        }
+            label:"행복",
 
-      ]
+            data:[happy]
+
+          }
+
+        ]
+
+      }
 
     }
 
-  }
+  );
 
-);
+}
 
-/* 카드 풀 */
+/* =========================
+   카드 데이터
+========================= */
 
 const allCards = [
 
@@ -137,8 +146,12 @@ const allCards = [
 
     effect(){
 
+      money -= 80;
+
       carbon -= 15;
+
       happy += 10;
+
       eco += 10;
 
       cityImage.className =
@@ -153,7 +166,7 @@ const allCards = [
       );
 
       addFeed(
-        "🌱 시민들이 친환경 정책을 지지합니다."
+        "🌱 시민들이 친환경 정책을 환영합니다."
       );
 
       delayedEffects.push({
@@ -187,10 +200,13 @@ const allCards = [
     effect(){
 
       money += 150;
+
       carbon += 20;
+
       happy -= 15;
 
       corp += 15;
+
       eco -= 10;
 
       cityImage.className =
@@ -217,6 +233,7 @@ const allCards = [
         effect(){
 
           happy -= 10;
+
           carbon += 10;
 
         }
@@ -240,10 +257,13 @@ const allCards = [
     effect(){
 
       money -= 50;
+
       happy += 18;
+
       carbon -= 10;
 
       eco += 8;
+
       citizen += 10;
 
       cityImage.className =
@@ -278,10 +298,13 @@ const allCards = [
     effect(){
 
       money -= 100;
+
       power += 35;
+
       carbon -= 8;
 
       corp += 5;
+
       citizen -= 5;
 
       cityImage.className =
@@ -302,6 +325,7 @@ const allCards = [
       if(Math.random() < 0.15){
 
         carbon += 20;
+
         happy -= 25;
 
         showNews(
@@ -331,10 +355,13 @@ const allCards = [
     effect(){
 
       money -= 120;
+
       carbon -= 12;
+
       happy += 12;
 
       eco += 5;
+
       citizen += 5;
 
       showNews(
@@ -366,10 +393,13 @@ const allCards = [
     effect(){
 
       money += 200;
+
       carbon += 30;
+
       happy -= 20;
 
       corp += 20;
+
       eco -= 20;
 
       cityImage.className =
@@ -393,7 +423,9 @@ const allCards = [
 
 ];
 
-/* 뉴스 */
+/* =========================
+   뉴스 팝업
+========================= */
 
 function showNews(title, desc){
 
@@ -418,7 +450,9 @@ function showNews(title, desc){
 
 }
 
-/* FEED */
+/* =========================
+   시민 로그
+========================= */
 
 function addFeed(text){
 
@@ -435,7 +469,9 @@ function addFeed(text){
 
 }
 
-/* 카드 랜덤 */
+/* =========================
+   카드 생성
+========================= */
 
 function generateCards(){
 
@@ -493,7 +529,9 @@ function generateCards(){
 
 }
 
-/* 랜덤 사건 */
+/* =========================
+   랜덤 사건
+========================= */
 
 function randomEvent(){
 
@@ -507,14 +545,6 @@ function randomEvent(){
     eventBox.innerHTML =
     "☀ 폭염으로 전력 사용량 증가";
 
-    showNews(
-
-      "☀ 폭염 발생",
-
-      "냉방 사용량이 폭증했습니다."
-
-    );
-
   }
 
   if(r === 1){
@@ -524,14 +554,6 @@ function randomEvent(){
     eventBox.innerHTML =
     "⛈ 태풍 피해 발생";
 
-    showNews(
-
-      "⛈ 태풍 상륙",
-
-      "도시 시설이 피해를 입었습니다."
-
-    );
-
   }
 
   if(r === 2){
@@ -540,14 +562,6 @@ function randomEvent(){
 
     eventBox.innerHTML =
     "😡 시민 시위 발생";
-
-    showNews(
-
-      "😡 시민 시위",
-
-      "시민 불만이 폭발했습니다."
-
-    );
 
   }
 
@@ -571,7 +585,9 @@ function randomEvent(){
 
 }
 
-/* 후폭풍 */
+/* =========================
+   후폭풍 처리
+========================= */
 
 function processDelayed(){
 
@@ -604,7 +620,9 @@ function processDelayed(){
 
 }
 
-/* UPDATE */
+/* =========================
+   UI 업데이트
+========================= */
 
 function updateUI(){
 
@@ -631,15 +649,19 @@ function updateUI(){
 
   /* 그래프 */
 
-  chart.data.labels.push(year);
+  if(chart){
 
-  chart.data.datasets[0].data.push(carbon);
+    chart.data.labels.push(year);
 
-  chart.data.datasets[1].data.push(happy);
+    chart.data.datasets[0].data.push(carbon);
 
-  chart.update();
+    chart.data.datasets[1].data.push(happy);
 
-  /* 상태 */
+    chart.update();
+
+  }
+
+  /* 상태 변화 */
 
   if(carbon >= 80){
 
@@ -696,7 +718,9 @@ function updateUI(){
 
 }
 
-/* GAME OVER */
+/* =========================
+   게임 오버
+========================= */
 
 function endGame(title, desc){
 
@@ -714,7 +738,9 @@ function endGame(title, desc){
 
 }
 
-/* NEXT TURN */
+/* =========================
+   턴 진행
+========================= */
 
 function nextTurn(){
 
@@ -741,6 +767,7 @@ function nextTurn(){
   }
 
   year++;
+
   turn++;
 
   selectedCard.effect();
@@ -749,7 +776,7 @@ function nextTurn(){
 
   randomEvent();
 
-  /* 전력 부족 */
+  /* 정전 */
 
   if(power <= 20){
 
@@ -845,13 +872,17 @@ function nextTurn(){
 
 }
 
-/* BUTTON */
+/* =========================
+   버튼 연결
+========================= */
 
 document
 .getElementById("confirmButton")
 .onclick = nextTurn;
 
-/* START */
+/* =========================
+   시작
+========================= */
 
 generateCards();
 
