@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <title>CARBON COLLAPSE</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script src="script.js" defer></script>
+
+</head>
+
+<body>
+
+<!-- TOP -->
+
+<div class="topbar">
+
+  <div class="logo">
+    ☣ CARBON COLLAPSE
+  </div>
+
+  <div class="stats">
+
+    <div>📅 <span id="yearText">2030</span></div>
+
+    <div>🎮 TURN <span id="turnText">1</span>/10</div>
+
+    <div>☁ 탄소 <span id="carbonText">20</span>%</div>
+
+    <div>😊 행복 <span id="happyText">100</span>%</div>
+
+    <div>⚡ 전력 <span id="powerText">70</span>%</div>
+
+    <div>🏙 수요 <span id="demandText">50</span>%</div>
+
+    <div>💰 <span id="moneyText">700</span>억</div>
+
+  </div>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main">
+
+  <!-- LEFT -->
+
+  <div class="left-panel">
+
+    <h2>📊 도시 그래프</h2>
+
+    <div class="graph-box">
+
+      <canvas id="chart"></canvas>
+
+    </div>
+
+    <div class="upgrade-box">
+
+      <h2>🏗 업그레이드</h2>
+
+      <button onclick="buyUpgrade('smart')">
+
+        스마트 그리드 (-150억)
+
+      </button>
+
+      <button onclick="buyUpgrade('capture')">
+
+        탄소 포집 시설 (-200억)
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- CENTER -->
+
+  <div class="center-panel">
+
+    <div class="city-header">
+
+      CITY STATUS :
+      <span id="cityState">
+        CLEAN
+      </span>
+
+    </div>
+
+    <div id="weatherBox">
+
+      ☀ 맑음
+
+    </div>
+
+    <img
+      id="cityImage"
+      src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df">
+
+  </div>
+
+  <!-- RIGHT -->
+
+  <div class="right-panel">
+
+    <h2>📢 시민 반응</h2>
+
+    <div id="feed">
+
+      <div class="feed-item">
+        🌱 탄소 도시 프로젝트 시작
+      </div>
+
+    </div>
+
+    <div class="event-box">
+
+      <h2>⚠ 랜덤 사건</h2>
+
+      <h3 id="eventTitle">
+        폭염 발생
+      </h3>
+
+      <p id="eventDesc">
+        냉방 사용량 증가
+      </p>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- POLICY -->
+
+<div class="card-section">
+
+  <div class="policy-card"
+       onclick="selectPolicy('solar', this)">
+
+    <h3>☀ 태양광 발전</h3>
+
+    <p>3턴 후 전력 대폭 증가</p>
+
+    <div class="card-stats">
+
+      <div>💰 -80억</div>
+      <div>⚡ +5</div>
+      <div>☁ -15</div>
+      <div>😊 +3</div>
+
+    </div>
+
+  </div>
+
+  <div class="policy-card"
+       onclick="selectPolicy('industry', this)">
+
+    <h3>🏭 산업단지 확대</h3>
+
+    <p>경제 성장</p>
+
+    <div class="card-stats">
+
+      <div>💰 +150억</div>
+      <div>⚡ -15</div>
+      <div>☁ +20</div>
+      <div>😊 -10</div>
+
+    </div>
+
+  </div>
+
+  <div class="policy-card"
+       onclick="selectPolicy('green', this)">
+
+    <h3>🌳 도시 녹화</h3>
+
+    <p>행복도 증가</p>
+
+    <div class="card-stats">
+
+      <div>💰 -50억</div>
+      <div>☁ -10</div>
+      <div>😊 +15</div>
+
+    </div>
+
+  </div>
+
+  <div class="policy-card"
+       onclick="selectPolicy('nuclear', this)">
+
+    <h3>⚛ 원자력 확대</h3>
+
+    <p>전력 안정</p>
+
+    <div class="card-stats">
+
+      <div>💰 -100억</div>
+      <div>⚡ +30</div>
+      <div>☁ -10</div>
+      <div>😊 -8</div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- CONFIRM -->
+
+<div class="confirm-area">
+
+  <div id="selectedPolicyText">
+
+    선택된 정책 없음
+
+  </div>
+
+  <button id="confirmButton">
+
+    정책 확정 ▶
+
+  </button>
+
+</div>
+
+<!-- GAME OVER -->
+
+<div id="gameOverScreen">
+
+  <h1>GAME OVER</h1>
+
+  <p id="gameOverReason">
+
+    도시 붕괴
+
+  </p>
+
+  <button onclick="location.reload()">
+
+    다시 시작
+
+  </button>
+
+</div>
+
+</body>
+</html>
