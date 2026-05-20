@@ -887,3 +887,5 @@ document
 generateCards();
 
 updateUI();
+
+console.log("게임 실행 성공");
