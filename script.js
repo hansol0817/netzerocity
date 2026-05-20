@@ -4,7 +4,6 @@ let turn = 1;
 let carbon = 20;
 let happy = 100;
 let power = 70;
-let demand = 50;
 let money = 700;
 
 let selectedPolicy = null;
@@ -25,9 +24,6 @@ document.getElementById("happyText");
 
 const powerText =
 document.getElementById("powerText");
-
-const demandText =
-document.getElementById("demandText");
 
 const moneyText =
 document.getElementById("moneyText");
@@ -79,6 +75,31 @@ new Chart(
 
 );
 
+/* 시민 반응 중앙 팝업 */
+
+function showCitizenPopup(title, text){
+
+  const popup =
+  document.getElementById("citizenPopup");
+
+  document.getElementById(
+    "popupTitle"
+  ).innerHTML = title;
+
+  document.getElementById(
+    "popupText"
+  ).innerHTML = text;
+
+  popup.style.display = "block";
+
+  setTimeout(()=>{
+
+    popup.style.display = "none";
+
+  },2500);
+
+}
+
 /* FEED */
 
 function addFeed(text){
@@ -96,31 +117,6 @@ function addFeed(text){
 
 }
 
-/* BIG EVENT */
-
-function showBigEvent(title, desc){
-
-  const event =
-  document.getElementById("bigEvent");
-
-  document.getElementById(
-    "bigEventTitle"
-  ).innerHTML = title;
-
-  document.getElementById(
-    "bigEventDesc"
-  ).innerHTML = desc;
-
-  event.style.display = "block";
-
-  setTimeout(()=>{
-
-    event.style.display = "none";
-
-  },2500);
-
-}
-
 /* UPDATE */
 
 function updateUI(){
@@ -134,8 +130,6 @@ function updateUI(){
   happyText.innerHTML = happy;
 
   powerText.innerHTML = power;
-
-  demandText.innerHTML = demand;
 
   moneyText.innerHTML = money;
 
@@ -167,7 +161,7 @@ function selectPolicy(policy, element){
 
 }
 
-/* TURN */
+/* NEXT TURN */
 
 function nextTurn(){
 
@@ -183,6 +177,8 @@ function nextTurn(){
   year++;
   turn++;
 
+  /* 태양광 */
+
   if(selectedPolicy === "solar"){
 
     money -= 80;
@@ -194,19 +190,21 @@ function nextTurn(){
     cityImage.className =
     "greenEffect";
 
-    showBigEvent(
+    showCitizenPopup(
 
-      "☀ 친환경 정책 시행",
+      "☀ 시민 반응",
 
-      "시민들이 깨끗해진 하늘에 환호합니다."
+      "“하늘이 훨씬 깨끗해졌어요!”<br><br>시민 만족도 증가"
 
     );
 
     addFeed(
-      "🌱 시민 만족도 증가"
+      "🌱 시민들이 친환경 정책을 환영합니다."
     );
 
   }
+
+  /* 산업단지 */
 
   if(selectedPolicy === "industry"){
 
@@ -219,19 +217,21 @@ function nextTurn(){
     cityImage.className =
     "pollutionEffect";
 
-    showBigEvent(
+    showCitizenPopup(
 
-      "🏭 산업 개발 강행",
+      "🏭 시민 반응",
 
-      "도시는 성장했지만 대기오염이 심화됩니다."
+      "“돈은 벌리는데 공기가 너무 안 좋아...”"
 
     );
 
     addFeed(
-      "😷 시민들이 공해를 걱정합니다."
+      "😷 시민들이 대기오염을 걱정합니다."
     );
 
   }
+
+  /* 도시녹화 */
 
   if(selectedPolicy === "green"){
 
@@ -244,19 +244,21 @@ function nextTurn(){
     cityImage.className =
     "greenEffect";
 
-    showBigEvent(
+    showCitizenPopup(
 
-      "🌳 도시 녹화 성공",
+      "🌳 시민 반응",
 
-      "공원이 늘어나며 시민 행복도가 상승합니다."
+      "“공원이 많아져서 산책하기 좋아요!”"
 
     );
 
     addFeed(
-      "🌳 도시 공원 확대"
+      "🌳 시민 행복도가 증가했습니다."
     );
 
   }
+
+  /* 원자력 */
 
   if(selectedPolicy === "nuclear"){
 
@@ -271,16 +273,16 @@ function nextTurn(){
     cityImage.className =
     "futureEffect";
 
-    showBigEvent(
+    showCitizenPopup(
 
-      "⚛ 원자력 시대 개막",
+      "⚛ 시민 반응",
 
-      "안정적인 전력 공급이 시작됩니다."
+      "“전기는 안정적이지만 조금 불안해요...”"
 
     );
 
     addFeed(
-      "⚡ 시민들이 미래 도시를 기대합니다."
+      "⚡ 시민들이 원전 안전성을 걱정합니다."
     );
 
   }
