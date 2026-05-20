@@ -11,6 +11,8 @@ body{
   overflow:auto;
 }
 
+/* TOPBAR */
+
 .topbar{
 
   height:70px;
@@ -41,6 +43,8 @@ body{
 
   gap:20px;
 }
+
+/* MAIN */
 
 .main{
 
@@ -121,6 +125,8 @@ body{
   border-radius:10px;
 }
 
+/* FEED */
+
 .feed-item{
 
   background:#111f33;
@@ -145,6 +151,8 @@ body{
   border-radius:15px;
 }
 
+/* GRAPH */
+
 .graph-box{
 
   background:#111f33;
@@ -153,6 +161,8 @@ body{
 
   border-radius:15px;
 }
+
+/* POLICY */
 
 .card-section{
 
@@ -202,6 +212,8 @@ body{
 
   gap:10px;
 }
+
+/* CONFIRM */
 
 .confirm-area{
 
@@ -254,6 +266,8 @@ body{
   cursor:pointer;
 }
 
+/* UPGRADE */
+
 .upgrade-box{
 
   margin-top:30px;
@@ -277,6 +291,103 @@ body{
 
   cursor:pointer;
 }
+
+/* POPUP */
+
+#eventPopup{
+
+  position:fixed;
+
+  top:0;
+
+  left:0;
+
+  width:100%;
+
+  height:100%;
+
+  background:rgba(0,0,0,0.7);
+
+  display:none;
+
+  justify-content:center;
+
+  align-items:center;
+
+  z-index:99999;
+}
+
+#popupCard{
+
+  width:500px;
+
+  background:#0c1726;
+
+  border-radius:25px;
+
+  padding:40px;
+
+  text-align:center;
+
+  animation:popupShow 0.4s;
+}
+
+#popupTitle{
+
+  color:#52ff9e;
+
+  font-size:42px;
+
+  margin-bottom:20px;
+}
+
+#popupDesc{
+
+  font-size:22px;
+
+  line-height:1.6;
+
+  margin-bottom:30px;
+}
+
+#popupCard button{
+
+  width:220px;
+
+  height:60px;
+
+  border:none;
+
+  border-radius:15px;
+
+  background:#2ecc71;
+
+  color:white;
+
+  font-size:22px;
+
+  cursor:pointer;
+}
+
+@keyframes popupShow{
+
+  from{
+
+    transform:scale(0.7);
+
+    opacity:0;
+  }
+
+  to{
+
+    transform:scale(1);
+
+    opacity:1;
+  }
+
+}
+
+/* GAME OVER */
 
 #gameOverScreen{
 
