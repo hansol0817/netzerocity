@@ -1,184 +1,271 @@
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
 
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-  <title>CARBON COLLAPSE</title>
+<title>CARBON COLLAPSE</title>
 
-  <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <script src="script.js" defer></script>
+<script src="script.js" defer></script>
 
 </head>
 
 <body>
 
+<!-- BACKGROUND EFFECT -->
+
+<div id="screenEffect"></div>
+
 <!-- TOPBAR -->
 
-<div class="topbar">
+<header class="topbar">
 
   <div class="logo">
+
     ☣ CARBON COLLAPSE
-  </div>
-
-  <div class="stats">
-
-    <div>📅 <span id="yearText">2030</span></div>
-
-    <div>🎮 TURN <span id="turnText">1</span>/10</div>
-
-    <div>☁ 탄소 <span id="carbonText">20</span>%</div>
-
-    <div>😊 행복 <span id="happyText">100</span>%</div>
-
-    <div>⚡ 전력 <span id="powerText">70</span>%</div>
-
-    <div>💰 <span id="moneyText">700</span>억</div>
 
   </div>
 
-</div>
+  <div class="top-stats">
+
+    <div class="stat">
+      📅 YEAR
+      <span id="yearText">2030</span>
+    </div>
+
+    <div class="stat">
+      🎮 TURN
+      <span id="turnText">1</span>/10
+    </div>
+
+    <div class="stat">
+      ☁ 탄소
+      <span id="carbonText">20</span>%
+    </div>
+
+    <div class="stat">
+      😊 행복
+      <span id="happyText">100</span>%
+    </div>
+
+    <div class="stat">
+      ⚡ 전력
+      <span id="powerText">70</span>%
+    </div>
+
+    <div class="stat">
+      💰 예산
+      <span id="moneyText">700</span>억
+    </div>
+
+  </div>
+
+</header>
 
 <!-- MAIN -->
 
-<div class="main">
+<div class="main-layout">
 
   <!-- LEFT -->
 
-  <div class="left-panel">
+  <aside class="left-panel">
 
-    <h2>📊 도시 그래프</h2>
+    <div class="panel-box">
 
-    <div class="graph-box">
+      <h2>📊 도시 상태</h2>
 
-      <canvas id="chart"></canvas>
+      <canvas id="mainChart"></canvas>
 
     </div>
 
-  </div>
+    <div class="panel-box">
+
+      <h2>📰 시민 반응</h2>
+
+      <div id="feed">
+
+        <div class="feed-item">
+          🌍 탄소 도시 프로젝트 시작
+        </div>
+
+      </div>
+
+    </div>
+
+  </aside>
 
   <!-- CENTER -->
 
-  <div class="center-panel">
+  <main class="center-panel">
 
-    <div class="city-header">
+    <!-- CITY -->
 
-      CITY STATUS :
-      <span id="cityState">
+    <div class="city-wrapper">
 
-        NORMAL
+      <div class="city-overlay">
 
-      </span>
+        <div class="city-status">
 
-    </div>
+          CITY STATUS :
+          <span id="cityState">
 
-    <img
+            NORMAL
+
+          </span>
+
+        </div>
+
+        <div class="weather-box" id="weatherBox">
+
+          ☀ 맑음
+
+        </div>
+
+      </div>
+
+      <img
       id="cityImage"
       src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df">
 
-    <!-- 중앙 시민반응 팝업 -->
+    </div>
 
-    <div id="citizenPopup">
+    <!-- BREAKING NEWS -->
 
-      <div class="popup-content">
+    <div id="breakingNews">
 
-        <h1 id="popupTitle">
+      <h1 id="newsTitle">
 
-          시민 반응
+        BREAKING NEWS
 
-        </h1>
+      </h1>
 
-        <p id="popupText">
+      <p id="newsDesc">
 
-          시민들이 반응합니다.
+        도시 정책 발표
 
-        </p>
-
-      </div>
+      </p>
 
     </div>
 
-  </div>
+    <!-- POLICY CARDS -->
+
+    <div class="cards-area" id="cardsArea">
+
+      <!-- JS 생성 -->
+
+    </div>
+
+    <!-- CONFIRM -->
+
+    <div class="confirm-area">
+
+      <div id="selectedCardText">
+
+        선택된 정책 없음
+
+      </div>
+
+      <button id="confirmButton">
+
+        정책 확정 ▶
+
+      </button>
+
+    </div>
+
+  </main>
 
   <!-- RIGHT -->
 
-  <div class="right-panel">
+  <aside class="right-panel">
 
-    <h2>📰 시민 반응 기록</h2>
+    <div class="panel-box">
 
-    <div id="feed">
+      <h2>⚠ 랜덤 사건</h2>
 
-      <div class="feed-item">
+      <div id="eventBox">
 
-        🌱 탄소 도시 프로젝트 시작
+        폭염 발생 가능성 증가
 
       </div>
 
     </div>
 
-  </div>
+    <div class="panel-box">
+
+      <h2>🏛 세력 상태</h2>
+
+      <div class="faction">
+
+        🌱 환경단체
+
+        <div class="bar">
+          <div id="ecoBar"></div>
+        </div>
+
+      </div>
+
+      <div class="faction">
+
+        🏭 기업
+
+        <div class="bar">
+          <div id="corpBar"></div>
+        </div>
+
+      </div>
+
+      <div class="faction">
+
+        👨 시민
+
+        <div class="bar">
+          <div id="citizenBar"></div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-box">
+
+      <h2>🏁 현재 방향</h2>
+
+      <div id="routeText">
+
+        균형 발전 도시
+
+      </div>
+
+    </div>
+
+  </aside>
 
 </div>
 
-<!-- POLICY -->
+<!-- GAME OVER -->
 
-<div class="card-section">
+<div id="gameOverScreen">
 
-  <div class="policy-card"
-       onclick="selectPolicy('solar', this)">
+  <h1 id="gameOverTitle">
 
-    <h3>☀ 태양광 발전</h3>
+    GAME OVER
 
-    <p>친환경 에너지 확대</p>
+  </h1>
 
-  </div>
+  <p id="gameOverDesc">
 
-  <div class="policy-card"
-       onclick="selectPolicy('industry', this)">
+    도시 붕괴
 
-    <h3>🏭 산업단지 확대</h3>
+  </p>
 
-    <p>경제 성장 중심 정책</p>
+  <button onclick="location.reload()">
 
-  </div>
-
-  <div class="policy-card"
-       onclick="selectPolicy('green', this)">
-
-    <h3>🌳 도시 녹화</h3>
-
-    <p>시민 행복 증가</p>
-
-  </div>
-
-  <div class="policy-card"
-       onclick="selectPolicy('nuclear', this)">
-
-    <h3>⚛ 원자력 확대</h3>
-
-    <p>전력 안정 확보</p>
-
-  </div>
-
-</div>
-
-<!-- CONFIRM -->
-
-<div class="confirm-area">
-
-  <div id="selectedPolicyText">
-
-    선택된 정책 없음
-
-  </div>
-
-  <button id="confirmButton">
-
-    정책 확정 ▶
+    다시 시작
 
   </button>
 
