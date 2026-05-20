@@ -17,7 +17,7 @@
 
 <body>
 
-<!-- TOP -->
+<!-- TOPBAR -->
 
 <div class="topbar">
 
@@ -61,24 +61,6 @@
 
     </div>
 
-    <div class="upgrade-box">
-
-      <h2>🏗 업그레이드</h2>
-
-      <button onclick="buyUpgrade('smart')">
-
-        스마트 그리드 (-150억)
-
-      </button>
-
-      <button onclick="buyUpgrade('capture')">
-
-        탄소 포집 시설 (-200억)
-
-      </button>
-
-    </div>
-
   </div>
 
   <!-- CENTER -->
@@ -89,7 +71,9 @@
 
       CITY STATUS :
       <span id="cityState">
+
         NORMAL
+
       </span>
 
     </div>
@@ -104,6 +88,24 @@
       id="cityImage"
       src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df">
 
+    <!-- BIG EVENT -->
+
+    <div id="bigEvent">
+
+      <h1 id="bigEventTitle">
+
+        BREAKING NEWS
+
+      </h1>
+
+      <p id="bigEventDesc">
+
+        정책 효과 발생
+
+      </p>
+
+    </div>
+
   </div>
 
   <!-- RIGHT -->
@@ -115,22 +117,10 @@
     <div id="feed">
 
       <div class="feed-item">
+
         🌱 탄소 도시 프로젝트 시작
+
       </div>
-
-    </div>
-
-    <div class="event-box">
-
-      <h2>⚠ 랜덤 사건</h2>
-
-      <h3 id="eventTitle">
-        폭염 발생
-      </h3>
-
-      <p id="eventDesc">
-        냉방 사용량 증가
-      </p>
 
     </div>
 
@@ -138,7 +128,7 @@
 
 </div>
 
-<!-- POLICY CARDS -->
+<!-- POLICY -->
 
 <div class="card-section">
 
@@ -147,15 +137,7 @@
 
     <h3>☀ 태양광 발전</h3>
 
-    <p>친환경 전력 투자</p>
-
-    <div class="card-stats">
-
-      <div>💰 -80억</div>
-      <div>☁ -10</div>
-      <div>😊 +5</div>
-
-    </div>
+    <p>친환경 에너지 확대</p>
 
   </div>
 
@@ -164,15 +146,7 @@
 
     <h3>🏭 산업단지 확대</h3>
 
-    <p>경제 성장</p>
-
-    <div class="card-stats">
-
-      <div>💰 +150억</div>
-      <div>☁ +20</div>
-      <div>😊 -10</div>
-
-    </div>
+    <p>경제 성장 중심 정책</p>
 
   </div>
 
@@ -181,15 +155,7 @@
 
     <h3>🌳 도시 녹화</h3>
 
-    <p>환경 개선</p>
-
-    <div class="card-stats">
-
-      <div>💰 -50억</div>
-      <div>☁ -10</div>
-      <div>😊 +15</div>
-
-    </div>
+    <p>시민 행복 증가</p>
 
   </div>
 
@@ -198,15 +164,7 @@
 
     <h3>⚛ 원자력 확대</h3>
 
-    <p>전력 안정</p>
-
-    <div class="card-stats">
-
-      <div>💰 -100억</div>
-      <div>⚡ +30</div>
-      <div>☁ -10</div>
-
-    </div>
+    <p>전력 안정 확보</p>
 
   </div>
 
@@ -225,50 +183,6 @@
   <button id="confirmButton">
 
     정책 확정 ▶
-
-  </button>
-
-</div>
-
-<!-- POPUP -->
-
-<div id="eventPopup">
-
-  <div id="popupCard">
-
-    <h1 id="popupTitle">
-      정책 실행
-    </h1>
-
-    <p id="popupDesc">
-      효과 설명
-    </p>
-
-    <button onclick="closePopup()">
-
-      확인
-
-    </button>
-
-  </div>
-
-</div>
-
-<!-- GAME OVER -->
-
-<div id="gameOverScreen">
-
-  <h1>GAME OVER</h1>
-
-  <p id="gameOverReason">
-
-    도시 붕괴
-
-  </p>
-
-  <button onclick="location.reload()">
-
-    다시 시작
 
   </button>
 
