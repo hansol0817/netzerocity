@@ -53,6 +53,28 @@ document.getElementById("gameOverScreen");
 const gameOverReason =
 document.getElementById("gameOverReason");
 
+/* POPUP */
+
+function showPopup(title, desc){
+
+  document.getElementById("eventPopup")
+  .style.display = "flex";
+
+  document.getElementById("popupTitle")
+  .innerHTML = title;
+
+  document.getElementById("popupDesc")
+  .innerHTML = desc;
+
+}
+
+function closePopup(){
+
+  document.getElementById("eventPopup")
+  .style.display = "none";
+
+}
+
 /* GRAPH */
 
 const chart =
@@ -123,7 +145,7 @@ function updateUI(){
 
   moneyText.innerHTML = money;
 
-  /* 그래프 */
+  /* GRAPH */
 
   chart.data.labels.push(year);
 
@@ -133,7 +155,7 @@ function updateUI(){
 
   chart.update();
 
-  /* 도시 상태 변화 */
+  /* 도시 상태 */
 
   if(carbon >= 80 || happy <= 20){
 
@@ -255,6 +277,11 @@ function randomEvent(){
       "☀ 폭염으로 냉방 수요 급증"
     );
 
+    showPopup(
+      "☀ 폭염 발생",
+      "전력 수요가 급증했습니다.<br>행복도 -5"
+    );
+
   }
 
   if(random === 1){
@@ -263,6 +290,11 @@ function randomEvent(){
 
     addFeed(
       "🌫 미세먼지 경보 발령"
+    );
+
+    showPopup(
+      "🌫 대기 오염 증가",
+      "탄소 배출량이 증가했습니다."
     );
 
   }
@@ -275,6 +307,11 @@ function randomEvent(){
       "⛈ 태풍 피해로 복구비 발생"
     );
 
+    showPopup(
+      "⛈ 태풍 상륙",
+      "도시 시설이 파괴되었습니다.<br>복구비 -100억"
+    );
+
   }
 
   if(random === 3){
@@ -285,6 +322,11 @@ function randomEvent(){
 
       addFeed(
         "🌍 국제 탄소 벌금 부과"
+      );
+
+      showPopup(
+        "🌍 국제 협약 위반",
+        "탄소 배출 초과로 벌금 부과<br>-150억"
       );
 
     }
@@ -301,9 +343,7 @@ function buyUpgrade(type){
 
     if(money < 150){
 
-      addFeed(
-        "💸 예산 부족"
-      );
+      addFeed("💸 예산 부족");
 
       return;
     }
@@ -316,15 +356,18 @@ function buyUpgrade(type){
       "⚡ 스마트그리드 구축 완료"
     );
 
+    showPopup(
+      "⚡ 스마트그리드",
+      "전력 효율이 증가했습니다!"
+    );
+
   }
 
   if(type === "capture"){
 
     if(money < 200){
 
-      addFeed(
-        "💸 예산 부족"
-      );
+      addFeed("💸 예산 부족");
 
       return;
     }
@@ -335,6 +378,11 @@ function buyUpgrade(type){
 
     addFeed(
       "🌱 탄소 포집 시설 가동"
+    );
+
+    showPopup(
+      "🌱 탄소 포집 성공",
+      "탄소 배출량이 크게 감소했습니다."
     );
 
   }
@@ -378,6 +426,11 @@ function nextTurn(){
 
       addFeed(effect.text);
 
+      showPopup(
+        "🏗 프로젝트 완료",
+        effect.text
+      );
+
     }
 
   });
@@ -413,6 +466,11 @@ function nextTurn(){
       "☀ 친환경 발전 투자 진행"
     );
 
+    showPopup(
+      "☀ 태양광 정책 실행",
+      "탄소 감소<br>3턴 후 발전소 완공 예정"
+    );
+
   }
 
   if(selectedPolicy === "industry"){
@@ -429,6 +487,11 @@ function nextTurn(){
       "🏭 시민들이 공기 질 악화를 걱정합니다."
     );
 
+    showPopup(
+      "🏭 산업단지 확대",
+      "경제 성장<br>탄소 증가"
+    );
+
   }
 
   if(selectedPolicy === "green"){
@@ -441,6 +504,11 @@ function nextTurn(){
 
     addFeed(
       "🌳 시민들이 공원 확대를 환영합니다."
+    );
+
+    showPopup(
+      "🌳 도시 녹화",
+      "행복도 증가<br>탄소 감소"
     );
 
   }
@@ -459,6 +527,11 @@ function nextTurn(){
       "⚛ 원전 안전성 논란 발생"
     );
 
+    showPopup(
+      "⚛ 원자력 확대",
+      "전력 공급 증가<br>시민 불안 증가"
+    );
+
   }
 
   /* 전력 부족 */
@@ -471,13 +544,18 @@ function nextTurn(){
       "⚡ 대규모 정전 발생!"
     );
 
+    showPopup(
+      "⚡ BLACKOUT",
+      "전력이 부족합니다.<br>시민 불만 폭증"
+    );
+
   }
 
   randomEvent();
 
   updateUI();
 
-  /* 카드 초기화 */
+  /* 초기화 */
 
   selectedPolicy = null;
 
@@ -532,14 +610,6 @@ function nextTurn(){
 
       endGame(
         "🏭 산업 초강대국 엔딩"
-      );
-
-    }
-
-    else if(power >= demand){
-
-      endGame(
-        "⚡ 에너지 안정 도시 엔딩"
       );
 
     }
